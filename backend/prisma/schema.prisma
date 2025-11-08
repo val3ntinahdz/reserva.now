@@ -24,4 +24,27 @@ model Usuario {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
+  profesional   Profesional?
+}
+
+model Profesional {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  experiencia Int
+  rating      Float?
+  telefono    String
+  direccion   String
+  ubicacion   String
+  horario     String
+  disponible  Boolean  @default(true)
+  precioMin   Int
+  precioMax   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  usuario     Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId   Int     @unique // @unique hace que sea 1-a-1
+
 }
