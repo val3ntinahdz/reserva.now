@@ -78,9 +78,9 @@ export default function BottomNav () {
         </Link>
         
         <Link
-          href="/perfil"
+          href="/cuenta"
           className={`flex flex-col items-center gap-1 py-2 px-4 rounded-lg transition-colors ${
-            isActive('/perfil') 
+            isActive('/cuenta') 
               ? 'text-[#e79c26] bg-[#ffedd5]' 
               : 'text-gray-600 hover:bg-gray-50'
           }`}

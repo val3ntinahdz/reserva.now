@@ -7,7 +7,7 @@ import { categories } from '@/data/professionals'
 
 export default function Home() {
   return (
-    <div className='min-h-screen pb-20 bg-[#ffedd5]'>
+    <div className='min-h-screen pb-20 bg-white'>
       <header className='bg-[#e79c26] text-[#312311] p-6 shadow-md'>
         <h1 className='text-2xl font-bold mb-2'>Reserva.Now</h1>
         <p className='text-sm text-[#312311]/80'>Encuentra profesionales cerca de ti</p>
@@ -33,7 +33,7 @@ export default function Home() {
                   </div>
                   
                   <div className='grid grid-cols-3 gap-2'>
-                    {categoria.profesionales.slice(0, 3).map((prof) => (
+                    {categoria.profesionales.map((prof) => (
                       <div key={prof.id} className='flex flex-col items-center'>
                         <div className='w-16 h-16 bg-[#ffedd5] rounded-lg overflow-hidden mb-1 relative'>
                           <Image
