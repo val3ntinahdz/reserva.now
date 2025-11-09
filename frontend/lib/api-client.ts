@@ -1,5 +1,6 @@
 // API Client Configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+// Línea nueva
+const API_BASE_URL = 'https://00hp750r-8000.usw3.devtunnels.ms/'
 
 export class ApiError extends Error {
   constructor(
