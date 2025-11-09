@@ -4,17 +4,13 @@ const prisma = new PrismaClient();
 async function main() {
   const categorias = [
     { nombre: "Salud", descripcion: "Servicios relacionados con la salud" },
-    { nombre: "Hogar", descripcion: "Servicios del hogar" },
-    { nombre: "Mascotas", descripcion: "Cuidado de mascotas" },
-    { nombre: "Automotriz", descripcion: "Servicios para autos" },
-    { nombre: "Eventos", descripcion: "Organización de eventos" },
-    { nombre: "Transporte", descripcion: "Servicios de transporte" },
-    { nombre: "Belleza", descripcion: "Servicios de belleza" },
-    { nombre: "Fitness", descripcion: "Entrenamiento y gimnasio" },
+    { nombre: "Artesanías", descripcion: "Arte indígena personalizado" },
+    { nombre: "Música", descripcion: "Servicios de mariachi y banda" },
+    { nombre: "Estética", descripcion: "Servicios de estética, sastrería, tejedoras, boleros" },
     { nombre: "Educación", descripcion: "Cursos y tutorías" },
-    { nombre: "Tecnología", descripcion: "Servicios de tecnología" },
+    { nombre: "Mano de obra", descripcion: "Servicios de plomería, carpintería, etc." },
     { nombre: "Legal", descripcion: "Asesoría legal" },
-    { nombre: "Gastronomía", descripcion: "Alimentos y catering" }
+    { nombre: "Mascotas", descripcion: "Asesoría veterinaria, estética canina, etc." },
   ];
   const usuarios = [
     { nombre: "Daniel Mondragon", email: "daniel@prueba.com", 
