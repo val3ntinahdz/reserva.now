@@ -47,4 +47,33 @@ model Profesional {
   usuario     Usuario @relation(fields: [usuarioId], references: [id])
   usuarioId   Int     @unique // @unique hace que sea 1-a-1
 
+  profesion   Profesion @relation(fields: [profesionId], references: [id])
+  profesionId Int
+}
+
+//////////////////////////////////////////////////
+//            C A T Á L O G O S                 //
+//////////////////////////////////////////////////
+
+model Categoria {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  estatus     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  profesiones Profesion[]
+}
+
+model Profesion {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  estatus     Boolean  @default(true)
+
+  categoria   Categoria @relation(fields: [categoriaId], references: [id])
+  categoriaId Int
+
+  profesionales Profesional[]
 }
