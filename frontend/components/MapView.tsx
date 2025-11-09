@@ -37,7 +37,8 @@ const servicios: Servicio[] = [
   { id: 3, nombre: 'Plomería Rápida', tipo: 'Plomero', lat: 19.4370, lng: -99.1410, disponible: false, distancia: '1.2 km' },
   { id: 4, nombre: 'Veterinaria Patitas', tipo: 'Veterinario', lat: 19.4250, lng: -99.1380, disponible: true, distancia: '1.5 km' },
   { id: 5, nombre: 'Gym Fitness Pro', tipo: 'Gimnasio', lat: 19.4340, lng: -99.1300, disponible: true, distancia: '0.7 km' },
-  { id: 6, nombre: 'Taller Mecánico Express', tipo: 'Mecánico', lat: 19.4290, lng: -99.1350, disponible: true, distancia: '0.9 km' }
+  { id: 6, nombre: 'Taller Mecánico Express', tipo: 'Mecánico', lat: 19.4290, lng: -99.1350, disponible: true, distancia: '0.9 km' },
+  { id: 7, nombre: 'Musica y Más', tipo: 'Músico', lat: 19.4310, lng: -99.1320, disponible: false, distancia: '1.0 km' }
 ]
 
 export default function MapView () {

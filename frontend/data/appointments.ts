@@ -144,6 +144,21 @@ export const appointments: Appointment[] = [
     estadoCita: 'Confirmada',
     estadoPago: 'Pendiente',
     duracion: '30 minutos'
+  },
+  {
+    id: 8,
+    profesionalId: 6,
+    profesionalNombre: 'Musica y Más',
+    profesionalEspecialidad: 'Músico',
+    profesionalImagen: '🎸',
+    fecha: '2024-12-02',
+    hora: '20:00',
+    modalidad: 'En establecimiento',
+    direccion: 'Bar La Melodía, Calle Juárez 890, Centro, CDMX',
+    precio: 1500,
+    estadoCita: 'Confirmada',
+    estadoPago: 'Pendiente',
+    duracion: '3 horas'
   }
 ]
 

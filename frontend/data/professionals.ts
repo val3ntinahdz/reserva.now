@@ -27,7 +27,7 @@ export interface Category {
 export const categories: Category[] = [
   {
     id: 'plomeria',
-    nombre: 'Plomería',
+    nombre: 'Musica',
     profesionales: [
       {
         id: 1,
@@ -238,6 +238,30 @@ export const categories: Category[] = [
         horario: 'Lun-Vie: 10:00-20:00, Sáb: 10:00-15:00',
         telefono: '55-8901-2567',
         servicios: ['Terapia individual', 'Terapia de pareja', 'Terapia familiar', 'Ansiedad', 'Depresión']
+      }
+    ]
+  },
+  {
+    id: 'musica',
+    nombre: 'Música',
+    profesionales: [
+      {
+        id: 10,
+        nombre: 'Musica y Más',
+        especialidad: 'Músico',
+        calificacion: 4.8,
+        resenas: 178,
+        precio: '$1,000 - $4,000',
+        disponible: false,
+        imagen: '/images/musician.png',
+        direccion: 'Centro Histórico, CDMX',
+        distancia: '0.8 km',
+        descripcion: 'Música en vivo para eventos. Amplio repertorio y experiencia.',
+        experiencia: '10 años',
+        modalidad: ['En eventos'],
+        horario: 'Lun-Vie: 10:00-22:00, Sáb: 12:00-23:00',
+        telefono: '55-6789-1234',
+        servicios: ['Música en vivo', 'DJ', 'Karaoke', 'Eventos corporativos', 'Fiestas privadas']
       }
     ]
   }
