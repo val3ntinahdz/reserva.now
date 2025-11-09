@@ -28,6 +28,10 @@ model Usuario {
   citas         Cita[]
   reseñas       Reseña[] 
   profesional   Profesional?
+
+  walletAddress     String        @unique
+  keyId             String
+  privateKeyPath    String
 }
 
 model Profesional {
@@ -110,6 +114,13 @@ model Cita {
 
   servicio      Servicio @relation(fields: [servicioId], references: [id])
   servicioId    Int
+
+  quoteId           String?       // URL del quote en Open Payments
+  incomingPaymentId String?       // URL del incoming payment
+  
+  // Detalles del quote
+  debitAmount       String?       // "50 USD"
+  receiveAmount     String?
 }
 
 model Reseña {
