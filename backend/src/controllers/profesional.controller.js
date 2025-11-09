@@ -3,7 +3,7 @@ import prisma from '../lib/prisma.js';
 export const getProfesionales = async (req, res) => {
   try {
     const profesionales = await prisma.profesional.findMany({
-      // Incluimos la profesión y la categoría para mostrar en las tarjetas
+      //Se muestra profesión y la categoría en las tarjetas
       include: {
         profesion: {
           include: {
@@ -31,13 +31,13 @@ export const getProfesionalById = async (req, res) => {
     const profesional = await prisma.profesional.findUnique({
       where: { id: parseInt(id) },
       include: {
-        // Traemos todo: profesión, categoría, servicios, modalidades, reseñas
+        //Se incluyen los datos relacionados
         profesion: { include: { categoria: true } },
         servicios: true,
         modalidades: true,
         reseñas: {
           include: {
-            usuario: { select: { nombre: true } } // Para ver quién escribió la reseña
+            usuario: { select: { nombre: true } } //Usuario que escribió la reseña
           }
         },
         usuario: { select: { nombre: true, email: true } }
@@ -59,7 +59,7 @@ export const createProfesionalProfile = async (req, res) => {
     // req.user viene del middleware 'authRequired'
     const userId = req.user.id;
 
-    // 1. Verificar si este usuario YA tiene un perfil
+    //Verificar si este usuario YA tiene un perfil
     const existingProfile = await prisma.profesional.findUnique({
       where: { usuarioId: userId }
     });
@@ -68,7 +68,6 @@ export const createProfesionalProfile = async (req, res) => {
       return res.status(400).json({ message: "Este usuario ya tiene un perfil profesional" });
     }
 
-    // 2. Obtener datos del body
     const {
       nombre,
       descripcion,
@@ -80,17 +79,15 @@ export const createProfesionalProfile = async (req, res) => {
       disponible,
       precioMin,
       precioMax,
-      profesionId, // ID de la profesión (ej. 1 para "Abogado")
-      serviciosIds,  // Array de IDs (ej. [1, 3, 5])
-      modalidadesIds // Array de IDs (ej. [1, 2])
+      profesionId, 
+      serviciosIds,
+      modalidadesIds
     } = req.body;
     
-    // 3. Validar datos clave
     if (!nombre || !profesionId) {
         return res.status(400).json({ message: "Nombre y profesionId son obligatorios" });
     }
 
-    // 4. Crear el perfil
     const newProfile = await prisma.profesional.create({
       data: {
         nombre: nombre,
