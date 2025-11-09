@@ -35,11 +35,10 @@ export interface LoginRequest {
 }
 
 export interface SignupRequest {
-  name: string
-  email: string
-  password: string
-  phone?: string
-  userType: 'client' | 'provider'
+  nombre: string; 
+  email: string;
+  password: string;
+  userType?: 'client' | 'provider';
 }
 
 export interface AuthResponse {
@@ -48,7 +47,6 @@ export interface AuthResponse {
   refreshToken?: string
 }
 
-// Professional/Provider Types
 export interface Professional {
   id: string
   userId: string
@@ -244,7 +242,7 @@ export interface SearchFilters {
   ubicacion?: {
     lat: number
     lng: number
-    radio: number // in kilometers
+    radio: number 
   }
   page?: number
   limit?: number
