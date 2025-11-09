@@ -75,6 +75,7 @@ model Categoria {
   estatus     Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  imagen      String?
 
   profesiones Profesion[]
 }
