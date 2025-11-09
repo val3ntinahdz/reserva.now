@@ -25,6 +25,8 @@ model Usuario {
   password  String
   createdAt DateTime @default(now())
 
+  citas         Cita[]
+  reseñas       Reseña[] 
   profesional   Profesional?
 }
 
@@ -49,6 +51,13 @@ model Profesional {
 
   profesion   Profesion @relation(fields: [profesionId], references: [id])
   profesionId Int
+
+  modalidades Modalidad[] @relation("ProfesionalModalidades")
+  servicios   Servicio[]  @relation("ProfesionalServicios")
+
+  reseña      Reseña[]    @relation("ProfesionalReseñas")
+  citas       Cita[]
+
 }
 
 //////////////////////////////////////////////////
@@ -76,4 +85,50 @@ model Profesion {
   categoriaId Int
 
   profesionales Profesional[]
+}
+
+model Modalidad {
+  id            Int           @id @default(autoincrement())
+  nombre        String
+  descripcion   String?
+  profesionales Profesional[] @relation("ProfesionalModalidades")
+}
+
+
+model Cita {
+  id        Int      @id @default(autoincrement())
+  fecha     DateTime
+  horario   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  usuario       Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId     Int
+
+  profesional   Profesional @relation(fields: [profesionalId], references: [id])
+  profesionalId Int
+
+  servicio      Servicio @relation(fields: [servicioId], references: [id])
+  servicioId    Int
+}
+
+model Reseña {
+  id           Int      @id @default(autoincrement())
+  calificacion Int // 1 a 5 estrellas
+  comentario   String?
+  fecha        DateTime @default(now())
+
+  profesional   Profesional @relation("ProfesionalReseñas", fields: [profesionalId], references: [id])
+  profesionalId Int
+
+  usuario       Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId     Int
+}
+
+model Servicio {
+  id            Int           @id @default(autoincrement())
+  nombre        String
+  descripcion   String?
+  profesionales Profesional[] @relation("ProfesionalServicios")
+  citas         Cita[]
 }
