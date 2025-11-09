@@ -3,33 +3,46 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { authService } from '@/services/auth.service' // <-- 1. IMPORTAR SERVICIO
 
 export default function LoginPage() {
   const router = useRouter()
   const [userType, setUserType] = useState<'client' | 'provider'>('client')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null) // <-- 2. AÑADIR ESTADO DE ERROR
 
-  const handleLogin = (e: React.FormEvent) => {
+  // --- INICIO DE CORRECCIÓN ---
+
+  // 3. REEMPLAZAR handleLogin con lógica REAL
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    // Simulate login
-    if (email && password) {
-      // Store user type in localStorage for demo purposes
-      localStorage.setItem('userType', userType)
-      localStorage.setItem('isLoggedIn', 'true')
-      localStorage.setItem('userEmail', email)
-      
-      alert(`Inicio de sesión exitoso como ${userType === 'client' ? 'Cliente' : 'Proveedor de Servicios'}`)
-      
-      // Redirect based on user type
+    setError(null) // Limpiar errores
+
+    try {
+      // 4. Llamar al servicio real
+      const response = await authService.login({ email, password, userType })
+
+      // 'response' contiene { id, nombre, email, token, ... }
+      // El servicio (auth.service.ts) ya guardó todo en localStorage
+
+      alert(`¡Bienvenido, !`)
+
+      // 5. Redirigir
+      // OJO: El backend no devuelve 'userType', así que usamos el selector del UI
       if (userType === 'client') {
         router.push('/')
       } else {
         router.push('/profesional-dashboard')
       }
+    } catch (err: any) {
+      // 6. Manejar errores de la API
+      console.error(err)
+      setError(err.message || 'Error al iniciar sesión. Verifica tus credenciales.')
     }
   }
+
+  // --- FIN DE CORRECCIÓN ---
 
   return (
     <div className='min-h-screen bg-white'>

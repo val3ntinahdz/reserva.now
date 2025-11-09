@@ -7,15 +7,41 @@ import type {
   User,
 } from '@/types/api'
 
+interface BackendLoginResponse {
+  id: string
+  nombre: string
+  email: string
+  token: string
+  createdAt: string
+  // OJO: Tu backend NO devuelve 'userType'
+}
+
+// Esta es la respuesta REAL que tu backend envía en el register
+// (Fuente: backend/src/controllers/auth.controller.js)
+interface BackendRegisterResponse {
+  id: string
+  nombre: string
+  email: string
+  createdAt: string
+}
+
+// Esta es la respuesta REAL que tu backend envía en /verify
+// (Fuente: backend/src/controllers/auth.controller.js)
+interface BackendVerifyResponse {
+  id: string
+  nombre: string
+  email: string
+}
+
 export const authService = {
   /**
    * Login user
    */
   async login(credentials: LoginRequest): Promise<AuthResponse> {
     const response = await apiClient.post<ApiResponse<AuthResponse>>(
-      '/auth/login',
-      credentials,
-      { requiresAuth: false }
+    'api/login', // <-- Cambia esto
+    credentials,
+    { requiresAuth: false }
     )
     
     if (response.data) {
@@ -34,24 +60,15 @@ export const authService = {
   /**
    * Signup new user
    */
-  async signup(userData: SignupRequest): Promise<AuthResponse> {
-    const response = await apiClient.post<ApiResponse<AuthResponse>>(
-      '/auth/signup',
+async signup(userData: SignupRequest): Promise<BackendRegisterResponse> {
+    // 5. Endpoint corregido: '/register' (antes era '/auth/signup')
+    // 6. Tipo de respuesta corregido: El backend solo devuelve el usuario
+    const response = await apiClient.post<BackendRegisterResponse>(
+      'api/register',
       userData,
       { requiresAuth: false }
     )
-    
-    if (response.data) {
-      // Store token in localStorage
-      localStorage.setItem('authToken', response.data.token)
-      localStorage.setItem('userType', response.data.user.userType)
-      localStorage.setItem('userId', response.data.user.id)
-      localStorage.setItem('userName', response.data.user.name)
-      localStorage.setItem('userEmail', response.data.user.email)
-      localStorage.setItem('isLoggedIn', 'true')
-    }
-    
-    return response.data!
+    return response
   },
 
   /**
@@ -59,9 +76,10 @@ export const authService = {
    */
   async logout(): Promise<void> {
     try {
-      await apiClient.post('/auth/logout')
+      // 8. Endpoint corregido: '/logout' (antes era '/auth/logout')
+      await apiClient.post('/logout')
     } finally {
-      // Clear localStorage regardless of API response
+      // Esta lógica de limpiar localStorage está perfecta.
       localStorage.removeItem('authToken')
       localStorage.removeItem('userType')
       localStorage.removeItem('userId')
@@ -82,9 +100,9 @@ export const authService = {
   /**
    * Update user profile
    */
-  async updateProfile(updates: Partial<User>): Promise<User> {
+async updateProfile(updates: Partial<User>): Promise<User> {
     const response = await apiClient.patch<ApiResponse<User>>(
-      '/auth/profile',
+      'api/profile', // <-- PROBABLEMENTE INCORRECTO
       updates
     )
     
@@ -141,7 +159,7 @@ export const authService = {
    */
   async refreshToken(refreshToken: string): Promise<AuthResponse> {
     const response = await apiClient.post<ApiResponse<AuthResponse>>(
-      '/auth/refresh',
+      'api/refresh',
       { refreshToken },
       { requiresAuth: false }
     )
