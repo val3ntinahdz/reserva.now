@@ -2,12 +2,9 @@ import { createAuthenticatedClient, isFinalizedGrant, OpenPaymentsClientError } 
 import { readFileSync } from 'fs';
 import path from 'path';
 
-// Configuración de wallets
+// Configuración de tu wallet principal (el que hace las solicitudes)
 const walletPrincipal = "https://ilp.interledger-test.dev/reserve-now-demo";
 const keyId = "818ac865-8812-4dc4-bdc2-9d50effea1f0";
-
-const cliente = "https://ilp.interledger-test.dev/cliente-jorge";
-const proveedor = "https://ilp.interledger-test.dev/proveedor-mariachis";
 
 // Cliente autenticado (reutilizable)
 let authenticatedClient = null;
@@ -49,7 +46,6 @@ async function getClient() {
  */
 async function getWalletInfo(walletUrl) {
   const client = await getClient();
-  console.log("Authenticated client:", client)
   
   try {
     const walletInfo = await client.walletAddress.get({
@@ -68,13 +64,13 @@ async function getWalletInfo(walletUrl) {
 /**
  * Crea un incoming payment para el proveedor
  */
-async function createIncomingPayment(amount, description, expiresInMinutes = 60) {
+async function createIncomingPayment(proveedorWalletUrl, amount, description, expiresInMinutes = 60) {
   try {
     const client = await getClient();
-    console.log("CLIENT TO CREATE A NREW INCOMING PAYMENT: ", client);
-    const receiverWallet = await getWalletInfo(proveedor);
+    const receiverWallet = await getWalletInfo(proveedorWalletUrl);
 
     console.log(`Creating incoming payment for ${amount} ${receiverWallet.assetCode}`);
+    console.log(`Provider wallet: ${proveedorWalletUrl}`);
 
     // Solicitar grant para crear incoming payment
     const incomingGrant = await client.grant.request(
@@ -131,12 +127,13 @@ async function createIncomingPayment(amount, description, expiresInMinutes = 60)
 /**
  * Crea un quote para calcular costos
  */
-async function createQuote(incomingPaymentUrl) {
+async function createQuote(clienteWalletUrl, incomingPaymentUrl) {
   try {
     const client = await getClient();
-    const sendingWallet = await getWalletInfo(cliente);
+    const sendingWallet = await getWalletInfo(clienteWalletUrl);
 
     console.log(`Creating quote for payment to ${incomingPaymentUrl}`);
+    console.log(`Client wallet: ${clienteWalletUrl}`);
 
     // Solicitar grant para quote
     const quoteGrant = await client.grant.request(
@@ -175,7 +172,6 @@ async function createQuote(incomingPaymentUrl) {
     );
 
     console.log("✓ Created quote:", quote.id);
-
     return quote;
 
   } catch (error) {
@@ -187,12 +183,13 @@ async function createQuote(incomingPaymentUrl) {
 /**
  * Crea un outgoing payment (requiere autorización del usuario)
  */
-async function createOutgoingPayment(quote) {
+async function createOutgoingPayment(clienteWalletUrl, quote) {
   try {
     const client = await getClient();
-    const sendingWallet = await getWalletInfo(cliente);
+    const sendingWallet = await getWalletInfo(clienteWalletUrl);
 
     console.log(`Creating outgoing payment for quote: ${quote.id}`);
+    console.log(`Client wallet: ${clienteWalletUrl}`);
 
     // Solicitar grant con interacción
     const outgoingPaymentGrant = await client.grant.request(
@@ -243,25 +240,27 @@ async function createOutgoingPayment(quote) {
 
 /**
  * FUNCIÓN PRINCIPAL: Inicia el flujo completo de pago
- * Esta es la que llamas desde tu frontend/backend
+ * Ahora recibe los wallet addresses dinámicamente
  */
-async function initiatePayment(amount, description = "Service payment") {
+async function initiatePayment(clienteWalletUrl, proveedorWalletUrl, amount, description = "Service payment") {
   try {
     console.log(`\n=== Starting Payment Flow ===`);
     console.log(`Amount: ${amount}`);
     console.log(`Description: ${description}`);
+    console.log(`Client: ${clienteWalletUrl}`);
+    console.log(`Provider: ${proveedorWalletUrl}`);
 
     // Paso 1: Crear incoming payment (proveedor)
     console.log("\n[Step 1/3] Creating incoming payment...");
-    const incomingPayment = await createIncomingPayment(amount, description);
+    const incomingPayment = await createIncomingPayment(proveedorWalletUrl, amount, description);
     
     // Paso 2: Crear quote (calcular costos)
     console.log("\n[Step 2/3] Creating quote...");
-    const quote = await createQuote(incomingPayment.id);
+    const quote = await createQuote(clienteWalletUrl, incomingPayment.id);
       
     // Paso 3: Crear outgoing payment (cliente autoriza)
     console.log("\n[Step 3/3] Creating outgoing payment...");
-    const outgoingPayment = await createOutgoingPayment(quote);
+    const outgoingPayment = await createOutgoingPayment(clienteWalletUrl, quote);
 
     // Formatear montos
     const debitAmount = {
@@ -327,7 +326,6 @@ async function initiatePayment(amount, description = "Service payment") {
 async function completePaymentAfterAuth(quoteId, continueUri, continueToken) {
   try {
     const client = await getClient();
-    const sendingWallet = await getWalletInfo(cliente);
 
     console.log('\n=== Completing Payment After Authorization ===');
     
@@ -343,14 +341,18 @@ async function completePaymentAfterAuth(quoteId, continueUri, continueToken) {
       throw new Error('Grant was not finalized after authorization');
     }
 
-    // Crear el outgoing payment final
+    // Para completar el payment necesitamos el wallet del cliente
+    // Esto debería venir del contexto o guardarse temporalmente
+    // Por ahora, usaremos una función auxiliar para obtenerlo del quote
+    const quoteInfo = await getQuoteInfo(quoteId);
+    
     const outgoingPayment = await client.outgoingPayment.create(
       {
-        url: sendingWallet.resourceServer,
+        url: quoteInfo.resourceServer,
         accessToken: finalizedGrant.access_token.value,
       },
       {
-        walletAddress: sendingWallet.id,
+        walletAddress: quoteInfo.walletAddress,
         quoteId: quoteId,
       },
     );
@@ -376,29 +378,27 @@ async function completePaymentAfterAuth(quoteId, continueUri, continueToken) {
   }
 }
 
-export {
-    getClient,
-    getWalletInfo,
-    createIncomingPayment,
-    createQuote,
-    createOutgoingPayment,
-    initiatePayment,
-    completePaymentAfterAuth
-};
-
-
-async function testPaymentFlow() {
-    try {
-        console.log("Testing payment flow...");
-        
-        // Ejecutar el flujo completo con un monto de prueba
-        const result = await initiatePayment(100, "Test payment");
-        
-        console.log("Payment flow result:", JSON.stringify(result, null, 2));
-        
-        return result;
-    } catch (error) {
-        console.error("Test failed:", error);
-    }
+/**
+ * Función auxiliar para obtener información del quote
+ */
+async function getQuoteInfo(quoteId) {
+  // En una implementación real, esto debería venir de tu base de datos
+  // o del contexto guardado. Por ahora retornamos valores por defecto.
+  const client = await getClient();
+  const defaultWallet = await getWalletInfo("https://ilp.interledger-test.dev/cliente-jorge");
+  
+  return {
+    resourceServer: defaultWallet.resourceServer,
+    walletAddress: defaultWallet.id
+  };
 }
-testPaymentFlow();
+
+export {
+  getClient,
+  getWalletInfo,
+  createIncomingPayment,
+  createQuote,
+  createOutgoingPayment,
+  initiatePayment,
+  completePaymentAfterAuth
+};
