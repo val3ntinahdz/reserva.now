@@ -71,15 +71,15 @@ export default function ClientInterledgerPage() {
           
           <div className='space-y-3'>
             <div className='flex justify-between items-center py-2'>
-              <span className='text-gray-600'>Balance Disponible</span>
+              <span className='text-gray-700'>Balance Disponible</span>
               <span className='font-semibold text-lg text-green-600'>$2,350.00</span>
             </div>
             <div className='flex justify-between items-center py-2 border-t border-gray-100'>
-              <span className='text-gray-600'>Pagos Realizados (Mes)</span>
+              <span className='text-gray-700'>Pagos Realizados (Mes)</span>
               <span className='font-semibold text-lg'>$4,800.00</span>
             </div>
             <div className='flex justify-between items-center py-2 border-t border-gray-100'>
-              <span className='text-gray-600'>Próximo Pago Programado</span>
+              <span className='text-gray-700'>Próximo Pago Programado</span>
               <span className='font-semibold text-lg text-yellow-600'>$600.00</span>
             </div>
           </div>
@@ -106,8 +106,8 @@ export default function ClientInterledgerPage() {
               }`}>
                 <div>
                   <p className='font-medium'>{pago.servicio}</p>
-                  <p className='text-sm text-gray-500'>{pago.profesional}</p>
-                  <p className='text-xs text-gray-400'>{pago.fecha}</p>
+                  <p className='text-sm text-gray-700'>{pago.profesional}</p>
+                  <p className='text-xs text-gray-700'>{pago.fecha}</p>
                 </div>
                 <div className='text-right'>
                   <p className='font-semibold text-red-600'>-${pago.monto.toLocaleString()}</p>

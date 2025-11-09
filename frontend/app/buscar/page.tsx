@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import BottomNav from '@/components/BottomNav'
+import DesktopNav from '@/components/DesktopNav'
 import MapView from '@/components/MapView'
 import { categories } from '@/data/professionals'
 
@@ -27,12 +28,8 @@ export default function BuscarPage () {
     : []
 
   return (
-    <div className='min-h-screen pb-20 bg-white'>
-      <header className='bg-[#e79c26] text-[#312311] p-6 shadow-md'>
-        <h1 className='text-2xl font-bold mb-2'>Buscar</h1>
-        <p className='text-sm text-[#312311]/80'>Encuentra el servicio perfecto para ti</p>
-      </header>
-
+    <div className='min-h-screen pb-20 md:pb-8 bg-white'>
+      <DesktopNav />
       <div className='flex border-b border-gray-200 bg-white sticky top-0 z-10'>
         <button
           onClick={() => setVistaActiva('buscar')}
@@ -62,7 +59,7 @@ export default function BuscarPage () {
         </button>
       </div>
 
-      <main className='p-4'>
+      <main className='p-4 md:p-6 lg:p-8 max-w-7xl mx-auto'>
         {vistaActiva === 'buscar' ? (
           <div className='space-y-4'>
             <div className='relative'>
@@ -123,7 +120,7 @@ export default function BuscarPage () {
                           </div>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
                             profesional.disponible
-                              ? 'bg-green-100 text-green-700'
+                              ? 'bg-[#ffedd5] text-[#e79c26]'
                               : 'bg-gray-100 text-gray-600'
                           }`}>
                             {profesional.disponible ? 'Disponible' : 'Ocupado'}

@@ -66,7 +66,7 @@ export default function UpdateProfilePage() {
     <div className='min-h-screen pb-6 bg-gray-50'>
       <header className='bg-[#fbbf24] text-white p-6 shadow-md sticky top-0 z-10'>
         <div className='flex items-center gap-3'>
-          <Link href='/provider/profile' className='text-2xl'>
+          <Link href='/cuenta-proveedor/profile' className='text-2xl'>
             ←
           </Link>
           <h1 className='text-2xl font-bold'>Actualizar Perfil</h1>
