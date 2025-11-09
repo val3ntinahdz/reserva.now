@@ -38,9 +38,9 @@ export default function CitaPage ({ params }: { params: Promise<{ id: string }> 
   const getEstadoCitaColor = (estado: string) => {
     switch (estado) {
       case 'Completada':
-        return 'bg-green-100 text-green-700'
+        return 'bg-[#ffedd5] text-[#312311]'
       case 'Confirmada':
-        return 'bg-blue-100 text-blue-700'
+        return 'bg-[#ffc87c]/30 text-[#e79c26]'
       case 'Cancelada':
         return 'bg-red-100 text-red-700'
       case 'En progreso':
@@ -53,13 +53,13 @@ export default function CitaPage ({ params }: { params: Promise<{ id: string }> 
   const getEstadoPagoColor = (estado: string) => {
     switch (estado) {
       case 'Pagado':
-        return 'bg-green-100 text-green-700'
+        return 'bg-[#ffedd5] text-[#e79c26]'
       case 'Pendiente':
         return 'bg-yellow-100 text-yellow-700'
       case 'En disputa':
         return 'bg-red-100 text-red-700'
       case 'Reembolsado':
-        return 'bg-blue-100 text-blue-700'
+        return 'bg-[#ffc87c]/30 text-[#312311]'
       default:
         return 'bg-gray-100 text-gray-700'
     }

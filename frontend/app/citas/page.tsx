@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import BottomNav from '@/components/BottomNav'
+import DesktopNav from '@/components/DesktopNav'
 
 type FilterType = 'Todas' | 'Completada' | 'Confirmada' | 'Cancelada' | 'En progreso'
 
@@ -53,9 +54,9 @@ export default function CitasPage () {
   const getEstadoColor = (estado: string) => {
     switch (estado) {
       case 'Completada':
-        return 'bg-green-100 text-green-700'
+        return 'bg-[#ffedd5] text-[#312311]'
       case 'Confirmada':
-        return 'bg-blue-100 text-blue-700'
+        return 'bg-[#ffc87c]/30 text-[#e79c26]'
       case 'Cancelada':
         return 'bg-red-100 text-red-700'
       case 'En progreso':
@@ -98,13 +99,10 @@ export default function CitasPage () {
   })
 
   return (
-    <div className='min-h-screen pb-20 bg-white'>
-      <header className='bg-[#e79c26] text-[#312311] p-6 shadow-md'>
-        <h1 className='text-2xl font-bold mb-2'>Citas</h1>
-        <p className='text-sm text-[#312311]/80'>Revisa tus reservaciones anteriores</p>
-      </header>
+    <div className='min-h-screen pb-20 md:pb-8 bg-white'>
+      <DesktopNav />
 
-      <main className='p-4 space-y-4'>
+      <main className='p-4 md:p-6 lg:p-8 max-w-7xl mx-auto space-y-4 md:space-y-6'>
         <div className='bg-white p-3 rounded-lg shadow-sm border border-gray-100'>
           <label htmlFor='filter-select' className='block text-sm font-medium text-gray-700 mb-2'>
             Filtrar por estado:
@@ -143,13 +141,10 @@ export default function CitasPage () {
           <>
             {/* Future Appointments Section */}
             {futureAppointments.length > 0 && (
-              <div className='space-y-3'>
-                <div className='flex items-center gap-2 px-1'>
-                  <svg className="w-5 h-5 text-[#e79c26]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <h2 className='text-lg font-bold text-gray-900'>Próximas Citas</h2>
-                  <span className='bg-[#e79c26] text-white text-xs font-bold px-2 py-1 rounded-full'>
+              <div className='space-y-4'>
+                <div className='flex items-center gap-3 px-1'>
+                  <h2 className='text-xl font-bold text-gray-900'>Próximas Citas</h2>
+                  <span className='bg-[#e79c26] text-white text-xs font-bold px-2.5 py-1 rounded-full'>
                     {futureAppointments.length}
                   </span>
                 </div>
@@ -212,13 +207,10 @@ export default function CitasPage () {
 
             {/* Past Appointments Section */}
             {pastAppointments.length > 0 && (
-              <div className='space-y-3'>
-                <div className='flex items-center gap-2 px-1'>
-                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <h2 className='text-lg font-bold text-gray-900'>Historial</h2>
-                  <span className='bg-gray-400 text-white text-xs font-bold px-2 py-1 rounded-full'>
+              <div className='space-y-4'>
+                <div className='flex items-center gap-3 px-1'>
+                  <h2 className='text-xl font-bold text-gray-900'>Historial</h2>
+                  <span className='bg-gray-400 text-white text-xs font-bold px-2.5 py-1 rounded-full'>
                     {pastAppointments.length}
                   </span>
                 </div>

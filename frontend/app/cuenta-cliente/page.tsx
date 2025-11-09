@@ -1,6 +1,7 @@
 'use client'
 
 import BottomNav from '@/components/BottomNav'
+import DesktopNav from '@/components/DesktopNav'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
@@ -15,10 +16,34 @@ export default function CuentaPage () {
   }, [])
 
   const menuItems = [
-    { id: 1, titulo: 'Actualizar Perfil', icon: '✏️', descripcion: 'Edita tu información personal', href: '/cuenta-cliente/update' },
-    { id: 2, titulo: 'Notificaciones', icon: '🔔', descripcion: 'Configura tus alertas', href: '/cuenta-cliente/notifications' },
-    { id: 3, titulo: 'Interledger', icon: '💳', descripcion: 'Gestiona tu wallet y pagos', href: '/cuenta-cliente/interledger' },
-    { id: 4, titulo: 'Ayuda y Soporte', icon: '❓', descripcion: 'Preguntas frecuentes y contacto', href: '/cuenta-cliente/help' },
+    { 
+      id: 1, 
+      titulo: 'Actualizar Perfil', 
+      icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>,
+      descripcion: 'Edita tu información personal', 
+      href: '/cuenta-cliente/update' 
+    },
+    { 
+      id: 2, 
+      titulo: 'Notificaciones', 
+      icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>,
+      descripcion: 'Configura tus alertas', 
+      href: '/cuenta-cliente/notifications' 
+    },
+    { 
+      id: 3, 
+      titulo: 'Interledger', 
+      icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>,
+      descripcion: 'Gestiona tu wallet y pagos', 
+      href: '/cuenta-cliente/interledger' 
+    },
+    { 
+      id: 4, 
+      titulo: 'Ayuda y Soporte', 
+      icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+      descripcion: 'Preguntas frecuentes y contacto', 
+      href: '/cuenta-cliente/help' 
+    },
   ]
 
   const handleLogout = () => {
@@ -30,38 +55,42 @@ export default function CuentaPage () {
   }
 
   return (
-    <div className='min-h-screen pb-20 bg-gray-50'>
-      <header className='bg-[#fbbf24] text-white p-6 shadow-md'>
-        <div className='flex items-center gap-3 mb-3'>
-          <h1 className='text-2xl font-bold'>Mi Cuenta</h1>
-        </div>
-        <div className='flex items-center space-x-3'>
-          <div className='w-14 h-14 bg-white rounded-full flex items-center justify-center text-2xl'>
-            👤
-          </div>
-          <div>
-            <p className='font-semibold'>{userName}</p>
-            <p className='text-sm text-white/90'>{userEmail}</p>
+    <div className='min-h-screen pb-20 md:pb-8 bg-white'>
+      <DesktopNav />
+      <header className='bg-[#e79c26] text-[#312311] p-8 shadow-md'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='flex items-center space-x-4'>
+            <div className='w-16 h-16 bg-white rounded-full flex items-center justify-center'>
+              <svg className="w-9 h-9 text-[#e79c26]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <div>
+              <p className='font-semibold text-lg'>{userName}</p>
+              <p className='text-sm text-[#312311]/80'>{userEmail}</p>
+            </div>
           </div>
         </div>
       </header>
 
-      <main className='p-4'>
+      <main className='p-4 md:p-6 lg:p-8 max-w-7xl mx-auto'>
         <div className='bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden'>
           {menuItems.map((item, index) => (
             <Link
               key={item.id}
               href={item.href}
-              className={`w-full p-4 flex items-center space-x-4 hover:bg-gray-50 transition-colors block ${
+              className={`w-full p-5 flex items-center space-x-4 hover:bg-gray-50 transition-colors block ${
                 index !== menuItems.length - 1 ? 'border-b border-gray-100' : ''
               }`}
             >
-              <span className='text-2xl'>{item.icon}</span>
+              <div className='text-[#e79c26]'>{item.icon}</div>
               <div className='flex-1 text-left'>
-                <p className='font-medium'>{item.titulo}</p>
-                <p className='text-sm text-gray-500 mt-0.5'>{item.descripcion}</p>
+                <p className='font-medium text-gray-900'>{item.titulo}</p>
+                <p className='text-sm text-gray-600 mt-1'>{item.descripcion}</p>
               </div>
-              <span className='text-gray-400'>›</span>
+              <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           ))}
         </div>
@@ -69,9 +98,11 @@ export default function CuentaPage () {
         <div className='mt-4'>
           <button
             onClick={() => setShowLogoutConfirm(true)}
-            className='w-full bg-white rounded-lg shadow-sm border border-gray-100 p-4 flex items-center space-x-4 hover:bg-red-50 transition-colors text-red-600'
+            className='w-full bg-white rounded-lg shadow-sm border border-gray-100 p-5 flex items-center space-x-4 hover:bg-red-50 transition-colors text-red-600'
           >
-            <span className='text-2xl'>🚪</span>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
             <div className='flex-1 text-left'>
               <p className='font-medium'>Cerrar Sesión</p>
             </div>
